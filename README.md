@@ -1,2 +1,1 @@
-# Salary_Predictions_of_Data_Professions git init git add README.md git commit -m first commit git branch -M main git remote add origin https://github.com/AlRashidIssa/Salary_Predictions_of_Data_Professions.git git push -u origin main
-# Salary_Predictions_of_Data_Professions git init git add README.md git commit -m first commit git branch -M main git remote add origin https://github.com/AlRashidIssa/Salary_Predictions_of_Data_Professions.git git push -u origin main
+Salary Price
