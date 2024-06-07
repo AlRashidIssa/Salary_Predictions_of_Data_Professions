@@ -1,0 +1,14 @@
+Dataset Columns
+FIRST NAME: First name of the professional
+LAST NAME: Last name of the professional
+SEX: Gender of the professional
+DOJ: Date of joining the company
+CURRENT DATE: Current date of data
+DESIGNATION: Job role/designation
+AGE: Age of the professional
+SALARY: Salary (target variable)
+UNIT: Business unit or department
+LEAVES USED: Number of leaves used
+LEAVES REMAINING: Number of leaves remaining
+RATINGS: Performance ratings
+PAST EXP: Past work experience
