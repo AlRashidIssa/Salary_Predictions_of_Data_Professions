@@ -1,9 +1,8 @@
 import joblib 
 import pandas as pd
 
-from pr_processData import PreprocessData
 
-class Prediction(PreprocessData):
+class Prediction():
     """
     A class used for loading a machine learning model and making predictions.
 
@@ -26,9 +25,12 @@ class Prediction(PreprocessData):
     def __init__(self, df: pd.DataFrame) -> None:
         """
         Initializes the Prediction class and the parent PreprocessData class.
+
+        df : pd.DataFrame
+            The data for make predict
         """
-        super().__init__(df)
         self.model = None
+        self.data = df
     
     def load_model(self, mode_path: str) -> None:
         """
@@ -41,30 +43,22 @@ class Prediction(PreprocessData):
         """
         self.model = joblib.load(mode_path)
 
-    def predict(self, data: pd.DataFrame) -> pd.Series:
+    def predict(self) -> pd.Series:
         """
         Makes predictions using the loaded model on the preprocessed data.
 
-        Parameters:
-        -----------
-        data : pd.DataFrame
-            The input data from making predictions.
 
         Returns:
         ---------
         pd.Series
             The predcitions made by the model.
         """
-        # Preprocess the data
-        self.df = data
-        self.df = self.scaling()
-
         # Check if the model is loaded
         if self.model is None:
             raise ValueError("Model is not loaded. Please load a model using the load_model method.")
         
         # Make predictions
-        predictions = self.model.predict(self.df)
+        predictions = self.model.predict(self.data)
         return pd.Series(predictions)
 
 

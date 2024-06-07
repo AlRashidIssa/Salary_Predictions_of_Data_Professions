@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Prediction Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Salary Prediction Form</h1>
+        <form action="result.html" method="post">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required><br>
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required><br>
+
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select><br>
+
+            <label for="doj">Date of Joining:</label>
+            <input type="date" id="doj" name="doj" required><br>
+
+            <label for="current_date">Current Date:</label>
+            <input type="date" id="current_date" name="current_date" required><br>
+
+            <label for="designation">Designation:</label>
+            <input type="text" id="designation" name="designation" required><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required><br>
+
+            <label for="unit">Business Unit/Department:</label>
+            <input type="text" id="unit" name="unit" required><br>
+
+            <label for="leaves_used">Leaves Used:</label>
+            <input type="number" id="leaves_used" name="leaves_used" required><br>
+
+            <label for="leaves_remaining">Leaves Remaining:</label>
+            <input type="number" id="leaves_remaining" name="leaves_remaining" required><br>
+
+            <label for="ratings">Performance Ratings:</label>
+            <input type="number" id="ratings" name="ratings" step="0.1" required><br>
+
+            <label for="past_exp">Past Experience (years):</label>
+            <input type="number" id="past_exp" name="past_exp" step="0.1" required><br>
+
+            <input type="submit" value="Predict Salary">
+        </form>
+    </div>
+</body>
+</html>
