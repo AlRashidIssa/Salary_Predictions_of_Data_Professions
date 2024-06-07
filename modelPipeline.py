@@ -9,6 +9,9 @@ from model import MLModel
 from evaluation import Evaluation
 from prediction import Prediction
 
+import warnings 
+warnings.filterwarnings('ignore')
+
 # Step 1: Ingest Data
 # NOTE: # This method should read data from CSV or SQL database
 data_ingestor = IngestData()
@@ -48,7 +51,7 @@ best_params_rf = hyper_tuner.tune_random_forest_regression(X_train, y_train)
 model = MLModel()
 # svr_model = model.train_model(X_train, y_train, algorithm='SVR')
 lr_model = model.train_model(X_train, y_train, algorithm='linear_regression')
-rf_model = model.train_model(X_train, y_train, algorithm='random_forest_regression')
+# rf_model = model.train_model(X_train, y_train, algorithm='random_forest_regression')
 
 # Step 7: Evaluate Models
 evaluator = Evaluation()
@@ -67,17 +70,17 @@ lr_mae = evaluator.MAE(y_test, y_pred_lr)
 lr_mdae = evaluator.MdAE(y_test, y_pred_lr)
 lr_mse = evaluator.MSE(y_test, y_pred_lr)
 
-# For Random Forest
-y_pred_rf = rf_model.predict(X_test)
-rf_r2 = evaluator.r2(y_test, y_pred_rf)
-rf_mae = evaluator.MAE(y_test, y_pred_rf)
-rf_mdae = evaluator.MdAE(y_test, y_pred_rf)
-rf_mse = evaluator.MSE(y_test, y_pred_rf)
+# # For Random Forest
+# y_pred_rf = rf_model.predict(X_test)
+# rf_r2 = evaluator.r2(y_test, y_pred_rf)
+# rf_mae = evaluator.MAE(y_test, y_pred_rf)
+# rf_mdae = evaluator.MdAE(y_test, y_pred_rf)
+# rf_mse = evaluator.MSE(y_test, y_pred_rf)
 
 # Output evaluation metrics
 # print(f"SVR Model - R2: {svr_r2}, MAE: {svr_mae}, MdAE: {svr_mdae}, MSE: {svr_mse}")
 print(f"Linear Regression Model - R2: {lr_r2}, MAE: {lr_mae}, MdAE: {lr_mdae}, MSE: {lr_mse}")
-print(f"Random Forest Model - R2: {rf_r2}, MAE: {rf_mae}, MdAE: {rf_mdae}, MSE: {rf_mse}")
+# print(f"Random Forest Model - R2: {rf_r2}, MAE: {rf_mae}, MdAE: {rf_mdae}, MSE: {rf_mse}")
 
 # Step 8: Make Predictions
 # predictor = Prediction()
@@ -86,4 +89,4 @@ print(f"Random Forest Model - R2: {rf_r2}, MAE: {rf_mae}, MdAE: {rf_mdae}, MSE: 
 # predictions = predictor.predict(new_data)  # Generate predictions
 
 # Optional: Save the final model
-joblib.dump(rf_model, 'svr_model.joblib')
+joblib.dump(lr_model, 'lr_model.joblib')
