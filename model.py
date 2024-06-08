@@ -77,13 +77,15 @@ class MLModel(TuningHyperparameters):
         
         self.model.fit(X, y)
 
-    def save_model(self, model_path: str) -> None:
+    def save_model(self,model, model_path: str) -> None:
         """
         Saves the trained machine learning model to a joblib file.
 
         Parameters:
         -----------
+        model : Model
+            Pss the model to save
         model_path : str
             The path to the joblib file where the model will be saved.
         """
-        self.model = joblib.dump(self.model, model_path)
+        model = joblib.dump(self.model, model_path)

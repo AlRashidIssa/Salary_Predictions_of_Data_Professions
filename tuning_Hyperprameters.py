@@ -49,8 +49,8 @@ class TuningHyperparameters:
         """
         self.learning_rate = learning_rate
         self.svr_param_grid = {
-            'C': [0.1, 1, 10, 100],
-            'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+            'C': [0.001, 0.01],
+            'kernel': ['linear'],
             'degree': [2, 3, 4],
             'gamma': ['scale', 'auto'],
             'coef0': [0.0, 0.1, 0.5],
@@ -64,31 +64,50 @@ class TuningHyperparameters:
 
         self.linear_regression_param_grid = {
             'fit_intercept': [True, False],
-            'normalize': [True, False],
             'copy_X': [True, False],
             'n_jobs': [-1, 1, 2, 4],
             'positive': [True, False]
         }
 
+        # self.random_forest_param_grid = {
+        #     'n_estimators': [100, 200, 300],
+        #     'criterion': ['squared_error'],
+        #     'max_depth': [None, 10, 20, 30],
+        #     'min_samples_split': [2, 5, 10],
+        #     'min_samples_leaf': [1, 2, 4],
+        #     'min_weight_fraction_leaf': [0.0, 0.1],
+        #     'max_features': ['auto', 'sqrt', 'log2'],
+        #     'max_leaf_nodes': [None, 10, 20],
+        #     'min_impurity_decrease': [0.0, 0.1, 0.2],
+        #     'bootstrap': [True, False],
+        #     'oob_score': [True, False],
+        #     'n_jobs': [-1, 1, 2, 4],
+        #     'random_state': [42],
+        #     'verbose': [0, 1],
+        #     'warm_start': [True, False],
+        #     'ccp_alpha': [0.0, 0.1, 0.2],
+        #     'max_samples': [None, 0.8, 0.9]
+        # }
         self.random_forest_param_grid = {
-            'n_estimators': [100, 200, 300],
-            'criterion': ['mse', 'mae'],
-            'max_depth': [None, 10, 20, 30],
-            'min_samples_split': [2, 5, 10],
-            'min_samples_leaf': [1, 2, 4],
-            'min_weight_fraction_leaf': [0.0, 0.1],
-            'max_features': ['auto', 'sqrt', 'log2'],
-            'max_leaf_nodes': [None, 10, 20],
-            'min_impurity_decrease': [0.0, 0.1, 0.2],
-            'bootstrap': [True, False],
-            'oob_score': [True, False],
-            'n_jobs': [-1, 1, 2, 4],
+            'n_estimators': [100],
+            'criterion': ['squared_error'],
+            'max_depth': [10],
+            'min_samples_split': [5],
+            'min_samples_leaf': [24],
+            'min_weight_fraction_leaf': [0.1],
+            'max_features': ['log2'],
+            'max_leaf_nodes': [10],
+            'min_impurity_decrease': [0.1],
+            'bootstrap': [True],
+            'oob_score': [True],
+            'n_jobs': [2],
             'random_state': [42],
-            'verbose': [0, 1],
-            'warm_start': [True, False],
-            'ccp_alpha': [0.0, 0.1, 0.2],
-            'max_samples': [None, 0.8, 0.9]
+            'verbose': [1],
+            'warm_start': [True],
+            'ccp_alpha': [0.1],
+            'max_samples': [0.9]
         }
+    
     
     def tune_svr(self, X: pd.DataFrame, y: pd.Series) -> dict:
         """

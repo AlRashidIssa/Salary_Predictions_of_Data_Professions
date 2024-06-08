@@ -14,7 +14,7 @@ class PreprocessData:
     Methods:
     --------
     __init__(df: pd.DataFrame) -> None:
-        Initializes the PreprocessData class with dataset.
+        Initializes the PreprocessData class with the dataset.
     
     scaling() -> pd.DataFrame:
         Scales numerical features in the dataset using MinMaxScaler.
@@ -24,6 +24,9 @@ class PreprocessData:
 
     label_encode(columns: list) -> pd.DataFrame:
         Applies label encoding to the specified columns.
+        
+    zero_encode(columns: list) -> pd.DataFrame:
+        Encodes specified columns to zero.
     """
 
     def __init__(self, df: pd.DataFrame) -> None:
@@ -43,13 +46,12 @@ class PreprocessData:
 
         Returns:
         --------
-        pd.DataFrane
+        pd.DataFrame
             The dataset with scaled numerical features.
         """
         scaler = MinMaxScaler()
-        numberical_cols = self.df.select_dtypes(include=[np.number]).columns
-        self.df[numberical_cols] = scaler.fit_transform(self.df[numberical_cols])
-
+        numerical_cols = self.df.select_dtypes(include=[np.number]).columns
+        self.df[numerical_cols] = scaler.fit_transform(self.df[numerical_cols])
         return self.df
 
     def one_hot_encode(self, columns: list) -> pd.DataFrame:
@@ -62,6 +64,7 @@ class PreprocessData:
             The list of columns to be one-hot encoded.
         
         Returns:
+        --------
         pd.DataFrame
             The dataset with one-hot encoded columns.
         """
@@ -75,16 +78,33 @@ class PreprocessData:
         Parameters:
         -----------
         columns : list
-            The list of columns to be lable encoded.
+            The list of columns to be label encoded.
 
         Returns:
         --------
         pd.DataFrame
-            The dataset with lable encoded columns.
+            The dataset with label encoded columns.
         """
         label_encoders = {}
         for column in columns:
-            label_encoders[columns] = LabelEncoder()
-            self.df[columns] = label_encoders[columns].fit_transform(self.df[columns])
+            label_encoders[column] = LabelEncoder()
+            self.df[column] = label_encoders[column].fit_transform(self.df[column])
+        return self.df
 
+    def zero_encode(self, columns: list) -> pd.DataFrame:
+        """
+        Encodes specified columns to zero.
+
+        Parameters:
+        -----------
+        columns : list
+            The list of columns to be encoded to zero.
+
+        Returns:
+        --------
+        pd.DataFrame
+            The dataset with specified columns encoded to zero.
+        """
+        for column in columns:
+            self.df[column] = 0
         return self.df
