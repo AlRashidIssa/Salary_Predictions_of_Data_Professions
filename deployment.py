@@ -1,52 +1,48 @@
-from flask import Flask, render_template, request, redirect, url_for
-from ingestData import IngestData
-from pr_processData import PreprocessData
-from prediction import Prediction
-from database import Database
-import numpy as np
+from flask import Flask, render_template, request
+from prediction_Deployment import PredictionDeployment  # Corrected import
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/result', methods=['POST'])
+@app.route('/result.html', methods=['POST'])  # Corrected route definition
 def result():
     # Extract form data
     data = {
-        'first_name': request.form['first_name'],
-        'last_name': request.form['last_name'],
-        'sex': request.form['sex'],
-        'doj': request.form['doj'],
-        'current_date': request.form['current_date'],
-        'designation': request.form['designation'],
-        'age': request.form['age'],
-        'unit': request.form['unit'],
-        'leaves_used': request.form['leaves_used'],
-        'leaves_remaining': request.form['leaves_remaining'],
-        'ratings': request.form['ratings'],
-        'past_exp': request.form['past_exp']
+        'FIRST NAME': request.form['first_name'],
+        'LAST NAME': request.form['last_name'],
+        'SEX': request.form['sex'],
+        'DOJ': request.form['doj'],
+        'CURRENT DATE': request.form['current_date'],
+        'DESIGNATION': request.form['designation'],
+        'AGE': request.form['age'],
+        'UNIT': request.form['unit'],
+        'LEAVES USED': request.form['leaves_used'],
+        'LEAVES REMAINING': request.form['leaves_remaining'],
+        'RATINGS': request.form['ratings'],
+        'PAST EXP': request.form['past_exp']
     }
 
-    dataset = Database(db_name="database.db")
-    dataset.insert_data(data=data)
+    # Convert data into DataFrame
+    df = pd.DataFrame(data, index=[0])
 
-    data = pd.DataFrame(data=data)
+    # Path to the saved model
+    model_path = "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/lr_model.joblib"
 
-    categorical_cols = data.select_dtypes(exclude=[np.number]).columns
-    # Fetch and preprocess data
-    preprocess = PreprocessData(data)
-    data = preprocess.one_hot_encode(columns= categorical_cols)
-    data = preprocess.scaling()
+    # Initialize PredictionDeployment object
+    deployment = PredictionDeployment(df=df, path_model=model_path)  # Corrected class name
 
-    # Make prediction
-    predicted = Prediction(data)
-    predicted.load_model(mode_path="")
-    predicted_salary = predicted.predict(data=data)
+    # Make predictions
+    predictions = deployment.predict()
 
-    return render_template('result.html', data=data, predicted_salary=predicted_salary)
+    # Print predictions
+    print("Predictions:", predictions)
+    
+    # Render result template with data and predicted salary
+    return render_template('result.html', data=data, predicted_salary=predictions)
 
 if __name__ == '__main__':
     app.run(debug=True)
