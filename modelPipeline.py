@@ -129,18 +129,20 @@ print(f"XGBoost Model - R2: {xgb_r2}, MAE: {xgb_mae}, MdAE: {xgb_mdae}, MSE: {xg
 print(f"CatBoost Model - R2: {cat_r2}, MAE: {cat_mae}, MdAE: {cat_mdae}, MSE: {cat_mse}")
 
 
-# Tuning CatBoost
-cat_model_tuning = model.train_model(X_train, y_train, algorithm='catboost', tune=True)
-model.save_model(cat_model_tuning, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+# # Tuning CatBoost
+# cat_model_tuning = model.train_model(X_train, y_train, algorithm='catboost', tune=True)
+# model.save_model(cat_model_tuning, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
 
-cat_model_tuning = Prediction(X_test)
-cat_model_tuning.load_model("/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+# cat_model_tuning = Prediction(X_test)
+# cat_model_tuning.load_model("/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
 
-evaluator = Evaluation(y_test, predictions_cat)
-catT_r2 = evaluator.r2()
-catT_mae = evaluator.MAE()
-catT_mdae = evaluator.MdAE()
-catT_mse = evaluator.MSE()
+# evaluator = Evaluation(y_test, predictions_cat)
+# catT_r2 = evaluator.r2()
+# catT_mae = evaluator.MAE()
+# catT_mdae = evaluator.MdAE()
+# catT_mse = evaluator.MSE()
 
-print(f"CatBoost Model  Tuning- R2: {catT_r2}, MAE: {catT_mae}, MdAE: {catT_mdae}, MSE: {catT_mse}")
+# print(f"CatBoost Model  Tuning- R2: {catT_r2}, MAE: {catT_mae}, MdAE: {catT_mdae}, MSE: {catT_mse}")
 
+
+X_train.columns
