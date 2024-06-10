@@ -1,81 +1,93 @@
 from pandas import DataFrame
 from pr_processData import PreprocessData
 from prediction import Prediction
+
+import numpy as np
 import pandas as pd
 
 class PredictionDeployment():
-    """
-    A class for deployment of prediction models after preprocessing the data.
-
-    Attributes:
-    -----------
-    df : DataFrame
-        The dataset to be used for prediction.
-    model_path : str
-        The file path to the saved prediction model.
-
-    Methods:
-    --------
-    __init__(df: DataFrame, model_path: str) -> None:
-        Initializes the PredictionDeployment class with the dataset and model path.
-    
-    predict() -> pd.Series:
-        Makes predictions using the loaded model on the preprocessed dataset.
-    """
     def __init__(self, df: DataFrame, path_model: str) -> None:
-        """
-        Initializes the PredictionDeployment class with the dataset and model path.
-
-        Parameters:
-        -----------
-        df : DataFrame
-            The dataset to be used for prediction.
-        model_path : str
-            The file path to the saved prediction model.
-        """
         self.df = df
         self.path_model = path_model
 
-        # Preprocess the data
-        preprocessor = PreprocessData(df=df)
 
-        # Ensure that the dataset has the necessary columns for prediction
-        expected_columns = ['FIRST NAME', 'LAST NAME', 'DOJ', 'DESIGNATION', 'AGE', 'UNIT', 'LEAVES USED', 'LEAVES REMAINING', 'RATINGS', 'PAST EXP']
-        for column in expected_columns:
-            if column not in df.columns:
-                df[column] = ''  # Add missing columns with default value
+        # Define a dictionary with column names and empty data
+        data_set = {
+            'AGE': pd.Series(dtype='float64'),
+            'LEAVES USED': pd.Series(dtype='float64'),
+            'LEAVES REMAINING': pd.Series(dtype='float64'),
+            'RATINGS': pd.Series(dtype='float64'),
+            'PAST EXP': pd.Series(dtype='float64'),
+            'SEX_F': pd.Series(dtype='int64'),
+            'SEX_M': pd.Series(dtype='int64'),
+            'DESIGNATION_Analyst': pd.Series(dtype='int64'),
+            'DESIGNATION_Associate': pd.Series(dtype='int64'),
+            'DESIGNATION_Director': pd.Series(dtype='int64'),
+            'DESIGNATION_Manager': pd.Series(dtype='int64'),
+            'DESIGNATION_Senior Analyst': pd.Series(dtype='int64'),
+            'DESIGNATION_Senior Manager': pd.Series(dtype='int64'),
+            'UNIT_Finance': pd.Series(dtype='int64'),
+            'UNIT_IT': pd.Series(dtype='int64'),
+            'UNIT_Management': pd.Series(dtype='int64'),
+            'UNIT_Marketing': pd.Series(dtype='int64'),
+            'UNIT_Operations': pd.Series(dtype='int64'),
+            'UNIT_Web': pd.Series(dtype='int64'),
+            'jo_Years': pd.Series(dtype='float64'),
+            'total_exp': pd.Series(dtype='float64')
+        }
 
-        # encode specific columns
-        preprocessor_df = preprocessor.zero_encode(columns=['FIRST NAME', 'LAST NAME'])
-        if 'SEX' in df.columns:
-            preprocessor_df = preprocessor.one_hot_encode(columns=['SEX'])
-            # Ensure that all one-hot encoded columns are present
-            expected_columns = ['SEX_M', 'SEX_F']
-            for column in expected_columns:
-                if column not in preprocessor_df.columns:
-                    preprocessor_df[column] = 0  # Add missing columns with default value
+        # Create an empty DataFrame with the specified columns
+        df_empty = pd.DataFrame(data_set)
         
-        preprocessor_df = preprocessor.label_encode(columns=['DOJ', 'DESIGNATION', 'UNIT'])
+        # Preprocess the data
+        preprocessor = PreprocessData(df=self.df)
+        self.preprocessor_df = preprocessor.one_hot_encode(columns=['SEX', 'DESIGNATION', 'UNIT'])
+        preprocessor_df = preprocessor.calculate_jo_years(doj_col='DOJ', current_date_col='CURRENT DATE')
+        self.preprocessor_df['total_exp'] = np.log2(self.preprocessor_df['PAST EXP'] + self.preprocessor_df['jo_Years'])
+        self.preprocessor_df = preprocessor.scaling()
+        self.preprocessor_df.dropna(inplace=True)
+        self.preprocessor_df = self.preprocessor_df.drop(columns=['FIRST NAME', 'LAST NAME', 'DOJ', 'CURRENT DATE'])
 
-        # Scaling all DataFrame
-        scaling = PreprocessData(df=preprocessor_df) 
-        self.scaling_df = scaling.scaling()
+        # Check if any column names are not present in the empty DataFrame
+        for col in preprocessor_df.columns:
+            if col not in df_empty.columns:
+                print("Column '{}' is not present in df_empty".format(col))
 
+        # Populating empty DataFrame
+        for col in df_empty.columns:
+            for col2 in preprocessor_df.columns:
+                if col == col2:
+                    df_empty[col] = preprocessor_df[col2].index[0]
+
+        self.df_empty = df_empty.fillna(value=0)
+        
     def predict(self) -> pd.Series:
-        """
-        Makes predictions using the loaded model on the preprocessed dataset.
-
-        Returns:
-        --------
-        pd.Series
-            The predicted values.
-        """
         # Predict
-        prediction = Prediction(self.scaling_df)
+        prediction = Prediction(self.df_empty)
         prediction.load_model(self.path_model)
         new_salary = prediction.predict()
-
+        
         return new_salary
 
+# Usage example
+input_user = {
+    'FIRST NAME': 'Rasid',
+    'LAST NAME': "Youse",
+    'SEX': 'M',
+    'DOJ': "7-28-2014",
+    'CURRENT DATE': "01-07-2016",
+    'DESIGNATION': 'Manager',
+    'AGE': 50,
+    'UNIT': "Finance",
+    'LEAVES USED': 12,
+    'LEAVES REMAINING': 20,
+    'RATINGS': 3000,
+    'PAST EXP': 30
+}
 
-
+data = pd.DataFrame(input_user, index=[0])
+deployment = PredictionDeployment(df=data, 
+                                  path_model="/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+new_salary, preprocessed_data = deployment.predict()
+print(new_salary)
+print(preprocessed_data)

@@ -1,0 +1,87 @@
+from pr_processData import PreprocessData
+import pandas as pd
+import numpy as np
+
+from prediction import Prediction
+
+# Input user data
+input_user = {
+    'FIRST NAME': 'Rasid',
+    'LAST NAME': "Youse",
+    'SEX': 'M',
+    'DOJ': "7-28-2014",
+    'CURRENT DATE': "01-07-2016",
+    'DESIGNATION': 'Manager',
+    'AGE': 50,
+    'UNIT': "Finance",
+    'LEAVES USED': 12,
+    'LEAVES REMAINING': 20,
+    'RATINGS': 3000,
+    'PAST EXP': 30
+}
+
+# Define a dictionary with column names and empty data
+data_set = {
+    'AGE': pd.Series(dtype='float64'),
+    'LEAVES USED': pd.Series(dtype='float64'),
+    'LEAVES REMAINING': pd.Series(dtype='float64'),
+    'RATINGS': pd.Series(dtype='float64'),
+    'PAST EXP': pd.Series(dtype='float64'),
+    'SEX_F': pd.Series(dtype='int64'),
+    'SEX_M': pd.Series(dtype='int64'),
+    'DESIGNATION_Analyst': pd.Series(dtype='int64'),
+    'DESIGNATION_Associate': pd.Series(dtype='int64'),
+    'DESIGNATION_Director': pd.Series(dtype='int64'),
+    'DESIGNATION_Manager': pd.Series(dtype='int64'),
+    'DESIGNATION_Senior Analyst': pd.Series(dtype='int64'),
+    'DESIGNATION_Senior Manager': pd.Series(dtype='int64'),
+    'UNIT_Finance': pd.Series(dtype='int64'),
+    'UNIT_IT': pd.Series(dtype='int64'),
+    'UNIT_Management': pd.Series(dtype='int64'),
+    'UNIT_Marketing': pd.Series(dtype='int64'),
+    'UNIT_Operations': pd.Series(dtype='int64'),
+    'UNIT_Web': pd.Series(dtype='int64'),
+    'jo_Years': pd.Series(dtype='float64'),
+    'total_exp': pd.Series(dtype='float64')
+}
+
+# Create an empty DataFrame with the specified columns
+df_empty = pd.DataFrame(data_set)
+
+# Preprocess the data
+data = pd.DataFrame(input_user, index=[0])
+
+preprocessor = PreprocessData(df=data)
+preprocessor_df = preprocessor.one_hot_encode(columns=['SEX', 'DESIGNATION', 'UNIT'])
+preprocessor_df = preprocessor.calculate_jo_years(doj_col='DOJ', current_date_col='CURRENT DATE')
+preprocessor_df['total_exp'] = np.log2(preprocessor_df['PAST EXP'] + preprocessor_df['jo_Years'])
+preprocessor_df = preprocessor.scaling()
+preprocessor_df.dropna(inplace=True)
+
+preprocessor_df = preprocessor_df.drop(columns=['DOJ', 'CURRENT DATE'])
+
+# Check if any column names are not present in the empty DataFrame
+for col in preprocessor_df.columns:
+    if col not in df_empty.columns:
+        print("Column '{}' is not present in df_empty".format(col))
+
+# Populating empty DataFrame
+for col in df_empty.columns:
+    for col2 in preprocessor_df.columns:
+        if col == col2:
+            df_empty.loc[1:, col] = preprocessor_df.loc[1:, col2].values
+
+df_empty = df_empty.fillna(value=0)
+
+df_empty
+
+
+
+# predictor_cat = Prediction(df_empty)
+
+
+# predictor_cat.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib')
+
+# predictions_cat = predictor_cat.predict()
+
+# predictions_cat

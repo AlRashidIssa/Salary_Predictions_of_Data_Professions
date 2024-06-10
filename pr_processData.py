@@ -99,7 +99,7 @@ class PreprocessData:
         label_encoders = {}
         for column in columns:
             label_encoders[column] = LabelEncoder()
-            self.df.loc[:, column] = label_encoders[column].fit_transform(df.loc[:, column])
+            self.df.loc[:, column] = label_encoders[column].fit_transform(self.df.loc[:, column])
         return self.df
 
     def zero_encode(self, columns: list) -> pd.DataFrame:
