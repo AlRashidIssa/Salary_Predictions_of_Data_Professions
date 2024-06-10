@@ -93,9 +93,9 @@ class CleaningData:
             The DataFrame with missing values replaced.
         """
         if strategy == 'mean':
-            self.df[column] = self.df[column].fillna(self.df[column].mean())
+            self.df.loc[:, column] = self.df.loc[:, column].fillna(self.df.loc[:, column].mean())
         elif strategy == 'median':
-            self.df[column] = self.df[column].fillna(self.df[column].median())
+            self.df.loc[:, column] = self.df.loc[:, column].fillna(self.df.loc[:, column].median())
         elif strategy == 'mode':
-            self.df[column] = self.df[column].fillna(self.df[column].mode().iloc[0])
+            self.df.loc[:, column] = self.df.loc[:, column].fillna(self.df.loc[:, column].mode().iloc[0])
         return self.df

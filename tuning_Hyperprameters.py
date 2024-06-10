@@ -3,6 +3,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 
+import lightgbm as lgb
+import xgboost as xgb
+import catboost as cb
+
 import pandas as pd
 
 class TuningHyperparameters:
@@ -14,40 +18,50 @@ class TuningHyperparameters:
     - Support Vector Regression (SVR)
     - Linear Regression
     - Random Forest Regression
+    - LightGBM
+    - XGBoost
+    - CatBoost
 
     Attributes:
     -----------
-    svr_params_gird: dict
+    svr_param_grid: dict
         Hyperparameters for tuning SVR.
-    linear_regression_params_grid: dict
+    linear_regression_param_grid: dict
         Hyperparameters for tuning Linear Regression.
-    random_forest_regression_params_grid: dict
+    random_forest_param_grid: dict
         Hyperparameters for tuning Random Forest Regression.
+    lightgbm_param_grid: dict
+        Hyperparameters for tuning LightGBM.
+    xgboost_param_grid: dict
+        Hyperparameters for tuning XGBoost.
+    catboost_param_grid: dict
+        Hyperparameters for tuning CatBoost.
 
     Methods:
     --------
-    __init__(learning_rate: float = 0.02) -> None:
-        Initializes the TuningHyperparameters class with the specified learning rate.
-
-    rune_svr(X: pd.DataFrame, y: pd.Series) -> dict:
+    tune_svr(X: pd.DataFrame, y: pd.Series) -> dict:
         Tunes hyperparameters for Support Vector Regression model.
     
-    rune_linear_regression(X: pd.DataFrame, y: pd.Series) -> dict:
+    tune_linear_regression(X: pd.DataFrame, y: pd.Series) -> dict:
         Tunes hyperparameters for Linear Regression model.
     
-    rune_random_forest_regression(X: pd.DataFrame, y: pd.Series) -> dict:
+    tune_random_forest_regression(X: pd.DataFrame, y: pd.Series) -> dict:
         Tunes hyperparameters for Random Forest Regression model.
-    """
-    def __init__(self, learning_rate: float = 0.02) -> None:
-        """
-        Initializes the TuningHyperparameters class with the specified learning rate.
 
-        Parameters:
-        -----------
-        learning_rate : float, optional
-            Learning rate for model where applicable (default = 0.02).
+    tune_lightgbm(X: pd.DataFrame, y: pd.Series) -> dict:
+        Tunes hyperparameters for LightGBM model.
+
+    tune_xgboost(X: pd.DataFrame, y: pd.Series) -> dict:
+        Tunes hyperparameters for XGBoost model.
+
+    tune_catboost(X: pd.DataFrame, y: pd.Series) -> dict:
+        Tunes hyperparameters for CatBoost model.
+    """
+    
+    def __init__(self) -> None:
         """
-        self.learning_rate = learning_rate
+        Initializes the TuningHyperparameters class with the hyperparameter grids.
+        """
         self.svr_param_grid = {
             'C': [0.001, 0.01],
             'kernel': ['linear'],
@@ -69,25 +83,6 @@ class TuningHyperparameters:
             'positive': [True, False]
         }
 
-        # self.random_forest_param_grid = {
-        #     'n_estimators': [100, 200, 300],
-        #     'criterion': ['squared_error'],
-        #     'max_depth': [None, 10, 20, 30],
-        #     'min_samples_split': [2, 5, 10],
-        #     'min_samples_leaf': [1, 2, 4],
-        #     'min_weight_fraction_leaf': [0.0, 0.1],
-        #     'max_features': ['auto', 'sqrt', 'log2'],
-        #     'max_leaf_nodes': [None, 10, 20],
-        #     'min_impurity_decrease': [0.0, 0.1, 0.2],
-        #     'bootstrap': [True, False],
-        #     'oob_score': [True, False],
-        #     'n_jobs': [-1, 1, 2, 4],
-        #     'random_state': [42],
-        #     'verbose': [0, 1],
-        #     'warm_start': [True, False],
-        #     'ccp_alpha': [0.0, 0.1, 0.2],
-        #     'max_samples': [None, 0.8, 0.9]
-        # }
         self.random_forest_param_grid = {
             'n_estimators': [100],
             'criterion': ['squared_error'],
@@ -107,8 +102,25 @@ class TuningHyperparameters:
             'ccp_alpha': [0.1],
             'max_samples': [0.9]
         }
-    
-    
+
+        self.lightgbm_param_grid = {
+            'num_leaves': [31, 50],
+            'learning_rate': [0.1, 0.05],
+            'n_estimators': [100, 200]
+        }
+
+        self.xgboost_param_grid = {
+            'max_depth': [3, 6, 9],
+            'learning_rate': [0.1, 0.01],
+            'n_estimators': [100, 200]
+        }
+
+        self.catboost_param_grid = {
+            'iterations': [100, 200],
+            'depth': [6, 10],
+            'learning_rate': [0.1, 0.05]
+        }
+
     def tune_svr(self, X: pd.DataFrame, y: pd.Series) -> dict:
         """
         Tunes hyperparameters for Support Vector Regression model.
@@ -121,7 +133,6 @@ class TuningHyperparameters:
         y : pd.Series
             The target variable.
 
-
         Returns:
         --------
         dict
@@ -131,7 +142,7 @@ class TuningHyperparameters:
         svr_grid_search = GridSearchCV(estimator=svr, param_grid=self.svr_param_grid, cv=5, n_jobs=-1, verbose=1)
         svr_grid_search.fit(X, y)
         return svr_grid_search.best_params_
-    
+
     def tune_linear_regression(self, X: pd.DataFrame, y: pd.Series) -> dict:
         """
         Tunes hyperparameters for Linear Regression model.
@@ -152,9 +163,8 @@ class TuningHyperparameters:
         linear_regression = LinearRegression()
         linear_regression_grid_search = GridSearchCV(estimator=linear_regression, param_grid=self.linear_regression_param_grid)
         linear_regression_grid_search.fit(X, y)
-
         return linear_regression_grid_search.best_params_
-    
+
     def tune_random_forest_regression(self, X: pd.DataFrame, y: pd.Series) -> dict:
         """
         Tunes hyperparameters for Random Forest Regression model.
@@ -175,5 +185,71 @@ class TuningHyperparameters:
         random_forest_regression = RandomForestRegressor()
         random_forest_regression_grid_search = GridSearchCV(estimator=random_forest_regression, param_grid=self.random_forest_param_grid)
         random_forest_regression_grid_search.fit(X, y)
-
         return random_forest_regression_grid_search.best_params_
+
+    def tune_lightgbm(self, X: pd.DataFrame, y: pd.Series) -> dict:
+        """
+        Tunes hyperparameters for LightGBM model.
+
+        Parameters:
+        -----------
+        X : pd.DataFrame
+            The features set.
+
+        y : pd.Series
+            The target variable.
+        
+        Returns:
+        --------
+        dict
+            The best parameters for LightGBM model.
+        """
+        lightgbm = lgb.LGBMRegressor()
+        lightgbm_grid_search = GridSearchCV(estimator=lightgbm, param_grid=self.lightgbm_param_grid)
+        lightgbm_grid_search.fit(X, y)
+        return lightgbm_grid_search.best_params_
+
+    def tune_xgboost(self, X: pd.DataFrame, y: pd.Series) -> dict:
+        """
+        Tunes hyperparameters for XGBoost model.
+
+        Parameters:
+        -----------
+        X : pd.DataFrame
+            The features set.
+
+        y : pd.Series
+            The target variable.
+        
+        Returns:
+        --------
+        dict
+            The best parameters for XGBoost model.
+        """
+        xgboost = xgb.XGBRegressor()
+        xgboost_grid_search = GridSearchCV(estimator=xgboost, param_grid=self.xgboost_param_grid)
+        xgboost_grid_search.fit(X, y)
+        return xgboost_grid_search.best_params_
+
+    def tune_catboost(self, X: pd.DataFrame, y: pd.Series) -> dict:
+        """
+        Tunes hyperparameters for CatBoost model.
+
+        Parameters:
+        -----------
+        X : pd.DataFrame
+            The features set.
+
+        y : pd.Series
+            The target variable.
+        
+        Returns:
+        --------
+        dict
+            The best parameters for CatBoost model.
+        """
+        catboost = cb.CatBoostRegressor(silent=True)
+        catboost_grid_search = GridSearchCV(estimator=catboost, param_grid=self.catboost_param_grid)
+        catboost_grid_search.fit(X, y)
+        return catboost_grid_search.best_params_
+
