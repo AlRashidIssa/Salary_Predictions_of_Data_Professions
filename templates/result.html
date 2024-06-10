@@ -5,46 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salary Prediction Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
 </head>
 <body>
     <div class="container">
         <h1>Salary Prediction Result</h1>
-        <p>First Name: <span id="first_name"></span></p>
-        <p>Last Name: <span id="last_name"></span></p>
-        <p>Sex: <span id="sex"></span></p>
-        <p>Date of Joining: <span id="doj"></span></p>
-        <p>Current Date: <span id="current_date"></span></p>
-        <p>Designation: <span id="designation"></span></p>
-        <p>Age: <span id="age"></span></p>
-        <p>Business Unit/Department: <span id="unit"></span></p>
-        <p>Leaves Used: <span id="leaves_used"></span></p>
-        <p>Leaves Remaining: <span id="leaves_remaining"></span></p>
-        <p>Performance Ratings: <span id="ratings"></span></p>
-        <p>Past Experience (years): <span id="past_exp"></span></p>
-        <p>Predicted Salary: <span id="predicted_salary"></span></p>
+        <p>First Name: {{ data['FIRST NAME'] }}</p>
+        <p>Last Name: {{ data['LAST NAME'] }}</p>
+        <p>Sex: {{ data['SEX'] }}</p>
+        <p>Date of Joining: {{ data['DOJ'] }}</p>
+        <p>Current Date: {{ data['CURRENT DATE'] }}</p>
+        <p>Designation: {{ data['DESIGNATION'] }}</p>
+        <p>Age: {{ data['AGE'] }}</p>
+        <p>Business Unit/Department: {{ data['UNIT'] }}</p>
+        <p>Leaves Used: {{ data['LEAVES USED'] }}</p>
+        <p>Leaves Remaining: {{ data['LEAVES REMAINING'] }}</p>
+        <p>Performance Ratings: {{ data['RATINGS'] }}</p>
+        <p>Past Experience (years): {{ data['PAST EXP'] }}</p>
+        <p>Predicted Salary: {{ predicted_salary }}$</p>
     </div>
-
-    <script>
-        // This script is to display the input values and predicted salary on the result page
-        document.addEventListener('DOMContentLoaded', function () {
-            const params = new URLSearchParams(window.location.search);
-            document.getElementById('first_name').textContent = params.get('first_name');
-            document.getElementById('last_name').textContent = params.get('last_name');
-            document.getElementById('sex').textContent = params.get('sex');
-            document.getElementById('doj').textContent = params.get('doj');
-            document.getElementById('current_date').textContent = params.get('current_date');
-            document.getElementById('designation').textContent = params.get('designation');
-            document.getElementById('age').textContent = params.get('age');
-            document.getElementById('unit').textContent = params.get('unit');
-            document.getElementById('leaves_used').textContent = params.get('leaves_used');
-            document.getElementById('leaves_remaining').textContent = params.get('leaves_remaining');
-            document.getElementById('ratings').textContent = params.get('ratings');
-            document.getElementById('past_exp').textContent = params.get('past_exp');
-            
-            // Fetch the predicted salary (dummy value here, replace with actual prediction logic)
-            document.getElementById('predicted_salary').textContent = "$50,000";
-        });
-    </script>
 </body>
 </html>

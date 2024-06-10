@@ -3,7 +3,7 @@ from ingestData import IngestData
 from cleaningData import CleaningData
 from pr_processData import PreprocessData
 from splitingData import SplitData
-from tuning_Hyperprameters import TuningHyperparameters
+# from tuning_Hyperprameters import TuningHyperparameters
 from model import MLModel
 from evaluation import Evaluation
 from prediction import Prediction
@@ -16,7 +16,7 @@ warnings.filterwarnings('ignore')
 
 # Ingest Data
 data_ingestor = IngestData()
-data = data_ingestor.get_data(source="/workspaces/Salary_Predictions_of_Data_Professions/Data/Salary Prediction of Data Professions.csv", 
+data = data_ingestor.get_data(source="/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/Data/Salary Prediction of Data Professions.csv", 
                               source_type='csv')
 
 data = data.drop(columns=['LAST NAME', 'FIRST NAME'])
@@ -54,12 +54,12 @@ cat_model = model.train_model(X_train, y_train, algorithm='catboost', tune=False
 xgb_model = model.train_model(X_train, y_train, algorithm='xgboost', tune=False)
 
 # Save Models
-model.save_model(svr_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/svr_model.joblib")
-model.save_model(lr_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/lr_model.joblib")
-model.save_model(rf_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/rf_model.joblib")
-model.save_model(lgb_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/lgb_model.joblib")
-model.save_model(cat_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
-model.save_model(xgb_model, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/xgb_model.joblib")
+model.save_model(svr_model,"/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/svr_model.joblib")
+model.save_model(lr_model, "/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/lr_model.joblib")
+model.save_model(rf_model, "/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/rf_model.joblib")
+model.save_model(lgb_model,"/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/lgb_model.joblib")
+model.save_model(cat_model,"/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+model.save_model(xgb_model,"/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/xgb_model.joblib")
 
 # Step 7: Make Predictions
 predictor_svr = Prediction(X_test)
@@ -69,12 +69,12 @@ predictor_lgb = Prediction(X_test)
 predictor_xgb = Prediction(X_test)
 predictor_cat = Prediction(X_test)
 
-predictor_svr.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/svr_model.joblib')
-predictor_lr.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/lr_model.joblib')
-predictor_rf.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/rf_model.joblib')
-predictor_lgb.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/lgb_model.joblib')
-predictor_xgb.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/xgb_model.joblib')
-predictor_cat.load_model('/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib')
+predictor_svr.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/svr_model.joblib')
+predictor_lr.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/lr_model.joblib')
+predictor_rf.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/rf_model.joblib')
+predictor_lgb.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/lgb_model.joblib')
+predictor_xgb.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/xgb_model.joblib')
+predictor_cat.load_model('/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib')
 
 predictions_svr = predictor_svr.predict()
 prediction_lr = predictor_lr.predict()
@@ -131,10 +131,10 @@ print(f"CatBoost Model - R2: {cat_r2}, MAE: {cat_mae}, MdAE: {cat_mdae}, MSE: {c
 
 # Tuning CatBoost
 cat_model_tuning = model.train_model(X_train, y_train, algorithm='catboost', tune=True)
-model.save_model(cat_model_tuning, "/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+model.save_model(cat_model_tuning, "/saved_model_joblib/cat_model_tuinig.joblib")
 
 cat_model_tuning = Prediction(X_test)
-cat_model_tuning.load_model("/workspaces/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+cat_model_tuning.load_model("/saved_model_joblib/cat_model_tuinig.joblib")
 
 evaluator = Evaluation(y_test, predictions_cat)
 catT_r2 = evaluator.r2()
@@ -143,4 +143,3 @@ catT_mdae = evaluator.MdAE()
 catT_mse = evaluator.MSE()
 
 print(f"CatBoost Model  Tuning- R2: {catT_r2}, MAE: {catT_mae}, MdAE: {catT_mdae}, MSE: {catT_mse}")
-

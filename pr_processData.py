@@ -27,6 +27,12 @@ class PreprocessData:
         
     zero_encode(columns: list) -> pd.DataFrame:
         Encodes specified columns to zero.
+
+    calculate_jo_years(doj_col: str, current_date_col: str) -> pd.DataFrame:
+        Calculates the number of years an employee has been with the company.
+    
+    manual_scaling() -> pd.DataFrame:
+        Applies manual scaling to the dataframe based on predefined min and max values.
     """
 
     def __init__(self, df: pd.DataFrame) -> None:
@@ -99,7 +105,7 @@ class PreprocessData:
         label_encoders = {}
         for column in columns:
             label_encoders[column] = LabelEncoder()
-            self.df.loc[:, column] = label_encoders[column].fit_transform(df.loc[:, column])
+            self.df.loc[:, column] = label_encoders[column].fit_transform(self.df.loc[:, column])
         return self.df
 
     def zero_encode(self, columns: list) -> pd.DataFrame:
@@ -119,6 +125,7 @@ class PreprocessData:
         for column in columns:
             self.df[column] = 0
         return self.df
+
     def calculate_jo_years(self, doj_col: str, current_date_col: str) -> pd.DataFrame:
         """
         Converts DOJ and CURRENT DATE columns to datetime and calculates the number of years an employee has been with the company.
@@ -143,3 +150,28 @@ class PreprocessData:
         self.df['jo_Years'] = (self.df[current_date_col] - self.df[doj_col]).dt.days / 365.25
         
         return self.df
+
+    def manual_scaling(self) -> pd.DataFrame:
+        """
+        Apply manual scaling to the dataframe based on predefined min and max values.
+
+        Returns:
+        --------
+        pd.DataFrame
+            The dataframe after scaling.
+        """
+        min_max_dict = {
+            "AGE": {"min": 21.0, "max": 45.0},
+            "LEAVES USED": {"min": 15.0, "max": 30.0},
+            "LEAVES REMAINING": {"min": 0.0, "max": 15.0},
+            "RATINGS": {"min": 2.0, "max": 5.0},
+            "PAST EXP": {"min": 0.0, "max": 23.0}
+        }
+
+        for col, min_max in min_max_dict.items():
+            min_val, max_val = min_max['min'], min_max['max']
+            if max_val - min_val != 0:
+                self.df[col] = (self.df[col] - min_val) / (max_val - min_val)
+        return self.df
+    
+
