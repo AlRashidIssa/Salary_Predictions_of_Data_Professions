@@ -33,7 +33,7 @@ def result():
         return scaled_value * (max_salary - min_salary) + min_salary
 
     deployment = PredictionDeployment(df=data_df, 
-                                      path_model="/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+                                      path_model="/saved_model_joblib/cat_model.joblib")
     scalin_salary = deployment.predict()
     new_salary = int(unscale_salary(scaled_value=scalin_salary) / 100)
 
@@ -42,4 +42,4 @@ def result():
     return render_template('result.html', data=data, predicted_salary=new_salary)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
