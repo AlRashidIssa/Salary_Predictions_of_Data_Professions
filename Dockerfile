@@ -7,6 +7,9 @@ RUN pacman -Syu --noconfirm && \
 
 # Create a directory for the app
 WORKDIR /app
+COPY app/requirements.txt /app
+COPY saved_model_joblib/cat_model.joblib /app/saved_model_joblib/cat_model.joblib
+
 
 # Create and activate a virtual environment
 RUN python -m venv venv && \
@@ -15,9 +18,6 @@ RUN python -m venv venv && \
 
 # Copy the application code
 COPY . /app
-
-# Ensure the model file is copied to the correct location
-COPY saved_model_joblib/cat_model.joblib /app/saved_model_joblib/cat_model.joblib
 
 # Expose the port the app runs on
 EXPOSE 5000
