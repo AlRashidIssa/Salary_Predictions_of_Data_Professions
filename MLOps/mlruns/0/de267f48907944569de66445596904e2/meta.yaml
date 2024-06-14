@@ -1,0 +1,16 @@
+artifact_uri: file:///home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlruns/0/de267f48907944569de66445596904e2/artifacts
+deleted_time: 1718217497200
+end_time: 1718214281260
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: de267f48907944569de66445596904e2
+run_name: random_forest
+run_uuid: de267f48907944569de66445596904e2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718214275816
+status: 3
+tags: []
+user_id: alrashidissa

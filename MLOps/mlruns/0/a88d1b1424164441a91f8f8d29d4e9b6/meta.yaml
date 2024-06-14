@@ -1,0 +1,16 @@
+artifact_uri: file:///home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlruns/0/a88d1b1424164441a91f8f8d29d4e9b6/artifacts
+deleted_time: 1718214640451
+end_time: 1718213942921
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: a88d1b1424164441a91f8f8d29d4e9b6
+run_name: lightgbm
+run_uuid: a88d1b1424164441a91f8f8d29d4e9b6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718213937231
+status: 3
+tags: []
+user_id: alrashidissa

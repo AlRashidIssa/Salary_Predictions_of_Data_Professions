@@ -252,4 +252,3 @@ class TuningHyperparameters:
         catboost_grid_search = GridSearchCV(estimator=catboost, param_grid=self.catboost_param_grid)
         catboost_grid_search.fit(X, y)
         return catboost_grid_search.best_params_
-

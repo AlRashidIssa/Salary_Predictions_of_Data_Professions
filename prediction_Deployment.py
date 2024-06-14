@@ -119,6 +119,7 @@ class PredictionDeployment:
         return new_salary
 
 # Usage example
+"""
 input_user = {
     'FIRST NAME': 'Rasid',
     'LAST NAME': "Youse",
@@ -133,14 +134,14 @@ input_user = {
     'RATINGS': 3000,
     'PAST EXP': 20
 }
+"""
+#def unscale_salary(scaled_value, min_salary=40001.0, max_salary=388112.0):
+#    return scaled_value * (max_salary - min_salary) + min_salary
 
-def unscale_salary(scaled_value, min_salary=40001.0, max_salary=388112.0):
-    return scaled_value * (max_salary - min_salary) + min_salary
+#data = pd.DataFrame(input_user, index=[0])
+#deployment = PredictionDeployment(df=data, 
+#                                 path_model="/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
+#scalin_salary = deployment.predict()
+#new_salary = unscale_salary(scaled_value=scalin_salary)
 
-data = pd.DataFrame(input_user, index=[0])
-deployment = PredictionDeployment(df=data, 
-                                  path_model="/home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/saved_model_joblib/cat_model.joblib")
-scalin_salary = deployment.predict()
-new_salary = unscale_salary(scaled_value=scalin_salary)
-
-print(int(new_salary / 100))
+# print(int(new_salary / 100))

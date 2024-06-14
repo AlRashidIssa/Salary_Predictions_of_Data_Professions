@@ -1,0 +1,15 @@
+digest: 5699ca39
+name: Salary Prediction of Data Professions
+profile: '{"num_rows": 2639, "num_elements": 34307}'
+schema: '{"mlflow_colspec": [{"type": "string", "name": "FIRST NAME", "required":
+  true}, {"type": "string", "name": "LAST NAME", "required": false}, {"type": "string",
+  "name": "SEX", "required": true}, {"type": "string", "name": "DOJ", "required":
+  false}, {"type": "string", "name": "CURRENT DATE", "required": true}, {"type": "string",
+  "name": "DESIGNATION", "required": true}, {"type": "double", "name": "AGE", "required":
+  false}, {"type": "long", "name": "SALARY", "required": true}, {"type": "string",
+  "name": "UNIT", "required": true}, {"type": "double", "name": "LEAVES USED", "required":
+  false}, {"type": "double", "name": "LEAVES REMAINING", "required": false}, {"type":
+  "double", "name": "RATINGS", "required": false}, {"type": "long", "name": "PAST
+  EXP", "required": true}]}'
+source: '{"uri": "Data/Salary Prediction of Data Professions.csv"}'
+source_type: local

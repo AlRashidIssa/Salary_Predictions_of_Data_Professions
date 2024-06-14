@@ -1,0 +1,16 @@
+artifact_uri: file:///home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlruns/0/5bced6611415403a8f4177ee1bdbf996/artifacts
+deleted_time: 1718214640452
+end_time: 1718213953063
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 5bced6611415403a8f4177ee1bdbf996
+run_name: xgboost
+run_uuid: 5bced6611415403a8f4177ee1bdbf996
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718213947807
+status: 3
+tags: []
+user_id: alrashidissa

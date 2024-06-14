@@ -1,0 +1,6 @@
+destination_id: ee4df619208b87b9ffc26dfa06851a57
+destination_type: RUN
+source_id: ee4df619208b87b9ffc26dfa06851a57
+source_type: DATASET
+tags:
+  mlflow.data.context: Data

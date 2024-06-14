@@ -1,0 +1,9 @@
+artifact_location: /home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlflow_artifacts
+creation_time: 1718213869727
+experiment_id: '385521482405248623'
+last_update_time: 1718214721594
+lifecycle_stage: deleted
+name: salary_prediction
+tags:
+  env: dev
+  version: 1.0.0

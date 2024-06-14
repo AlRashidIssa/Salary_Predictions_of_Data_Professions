@@ -7,11 +7,12 @@ RUN pacman -Syu --noconfirm && \
 
 # Create a directory for the app
 WORKDIR /app
-COPY app/requirements.txt /app
-COPY saved_model_joblib/cat_model.joblib /app/saved_model_joblib/cat_model.joblib
 
+# Copy the requirements.txt file
+COPY requirements.txt /app
+COPY saved_model_joblib /app
 
-# Create and activate a virtual environment
+# Install Python dependencies
 RUN python -m venv venv && \
     /app/venv/bin/pip install --no-cache-dir --upgrade pip && \
     /app/venv/bin/pip install --no-cache-dir -r requirements.txt

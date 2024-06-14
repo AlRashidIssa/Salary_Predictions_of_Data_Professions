@@ -1,0 +1,16 @@
+artifact_uri: file:///home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlruns/0/7f9efe0850554d12814bc888d336fc65/artifacts
+deleted_time: 1718217497200
+end_time: 1718214291904
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 7f9efe0850554d12814bc888d336fc65
+run_name: catboost
+run_uuid: 7f9efe0850554d12814bc888d336fc65
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718214287092
+status: 3
+tags: []
+user_id: alrashidissa

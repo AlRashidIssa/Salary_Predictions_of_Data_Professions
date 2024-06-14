@@ -1,0 +1,16 @@
+artifact_uri: file:///home/alrashidissa/Desktop/Internship/Salary_Predictions_of_Data_Professions/MLOps/mlruns/0/189a97fd6a2b4a3fa0c2bc09afb42ab8/artifacts
+deleted_time: 1718214640427
+end_time: 1718213931575
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 189a97fd6a2b4a3fa0c2bc09afb42ab8
+run_name: linear_regression
+run_uuid: 189a97fd6a2b4a3fa0c2bc09afb42ab8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718213926503
+status: 3
+tags: []
+user_id: alrashidissa
